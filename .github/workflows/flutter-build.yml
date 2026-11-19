@@ -768,6 +768,13 @@ jobs:
           popd
           mkdir -p ./SignOutput
           mv ./target/release/rustdesk-portable-packer.exe ./SignOutput/rustdesk-${{ env.VERSION }}-${{ matrix.job.arch }}-sciter.exe
+      - name: Upload rdk Portable EXE
+        if: env.UPLOAD_ARTIFACT == 'true' && matrix.job.arch == 'x86_64'
+        uses: actions/upload-artifact@v4
+        with:
+          name: rdk-portable-windows-x64
+          path: ./SignOutput/rustdesk-${{ env.VERSION }}-${{ matrix.job.arch }}.exe
+          if-no-files-found: error
 
       - name: Sign rustdesk self-extracted file
         if: env.UPLOAD_ARTIFACT == 'true' && env.SIGN_BASE_URL != '-2'
